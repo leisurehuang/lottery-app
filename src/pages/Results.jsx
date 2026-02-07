@@ -1,0 +1,277 @@
+import { Link } from 'react-router-dom'
+
+function Results({ appData, updateAppData }) {
+  const { winners, prizes, employees } = appData
+
+  const exportToCSV = () => {
+    if (winners.length === 0) {
+      alert('没有中奖记录可以导出')
+      return
+    }
+
+    const headers = ['序号', '姓名', '工号', '奖项', '等级', '中奖时间']
+    const rows = winners.map((winner, index) => [
+      index + 1,
+      winner.employeeName,
+      winner.employeeId,
+      winner.prizeName,
+      winner.prizeLevel,
+      new Date(winner.timestamp).toLocaleString('zh-CN')
+    ])
+
+    const csvContent = [
+      headers.join(','),
+      ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+    ].join('\n')
+
+    const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    const url = URL.createObjectURL(blob)
+
+    link.setAttribute('href', url)
+    link.setAttribute('download', `中奖名单_${new Date().toLocaleDateString('zh-CN')}.csv`)
+    link.style.visibility = 'hidden'
+
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
+  const exportToTXT = () => {
+    if (winners.length === 0) {
+      alert('没有中奖记录可以导出')
+      return
+    }
+
+    let content = '年会抽奖中奖名单\n'
+    content += '=' .repeat(50) + '\n\n'
+
+    const sortedPrizes = [...prizes].sort((a, b) => b.level - a.level)
+
+    sortedPrizes.forEach(prize => {
+      const prizeWinners = winners.filter(w => w.prizeLevel === prize.level)
+
+      content += `\n【${prize.name}】（等级 ${prize.level}）\n`
+      content += '-'.repeat(30) + '\n'
+
+      if (prizeWinners.length === 0) {
+        content += '暂无中奖人员\n'
+      } else {
+        prizeWinners.forEach((winner, index) => {
+          content += `${index + 1}. ${winner.employeeName}（${winner.employeeId}）\n`
+        })
+      }
+      content += `\n共 ${prizeWinners.length} / ${prize.count} 人中奖\n`
+    })
+
+    content += '\n' + '='.repeat(50) + '\n'
+    content += `总计 ${winners.length} 人中奖\n`
+    content += `导出时间：${new Date().toLocaleString('zh-CN')}\n`
+
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8;' })
+    const link = document.createElement('a')
+    const url = URL.createObjectURL(blob)
+
+    link.setAttribute('href', url)
+    link.setAttribute('download', `中奖名单_${new Date().toLocaleDateString('zh-CN')}.txt`)
+    link.style.visibility = 'hidden'
+
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
+  const resetWinners = () => {
+    if (confirm('确定要清空中奖记录吗？此操作不可恢复。')) {
+      updateAppData({ winners: [], currentLevel: 0 })
+      alert('中奖记录已清空')
+    }
+  }
+
+  const sortedPrizes = [...prizes].sort((a, b) => b.level - a.level)
+
+  return (
+    <div className="fade-in">
+      <div className="card">
+        <div className="flex-between">
+          <h2 className="subheading">🏆 中奖名单</h2>
+          <div className="flex-gap">
+            <button onClick={exportToCSV} className="button button-primary" disabled={winners.length === 0}>
+              📄 导出CSV
+            </button>
+            <button onClick={exportToTXT} className="button button-secondary" disabled={winners.length === 0}>
+              📝 导出TXT
+            </button>
+            {winners.length > 0 && (
+              <button onClick={resetWinners} className="button button-danger">
+                🗑️ 清空记录
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {winners.length === 0 ? (
+        <div className="card">
+          <p className="text" style={{ textAlign: 'center', padding: '40px' }}>
+            还没有中奖记录，<Link to="/lottery">开始抽奖</Link>
+          </p>
+        </div>
+      ) : (
+        <div className="grid-2">
+          <div className="card">
+            <h3 className="subheading">按奖项分组</h3>
+
+            {sortedPrizes.map((prize, index) => {
+              const prizeWinners = winners.filter(w => w.prizeLevel === prize.level)
+
+              return (
+                <div key={index} className="card mt-4" style={{ background: '#f7fafc' }}>
+                  <div className="flex-between">
+                    <div>
+                      <strong>{prize.name}</strong>
+                      <span className="text-small">（等级 {prize.level}）</span>
+                    </div>
+                    <div className="text-small">
+                      {prizeWinners.length} / {prize.count}
+                    </div>
+                  </div>
+
+                  {prizeWinners.length === 0 ? (
+                    <p className="text-small mt-4">暂无中奖人员</p>
+                  ) : (
+                    <table className="table mt-4">
+                      <thead>
+                        <tr>
+                          <th>序号</th>
+                          <th>姓名</th>
+                          <th>工号</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {prizeWinners.map((winner, winnerIndex) => (
+                          <tr key={winnerIndex}>
+                            <td>{winnerIndex + 1}</td>
+                            <td>{winner.employeeName}</td>
+                            <td>{winner.employeeId}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+
+          <div className="card">
+            <h3 className="subheading">完整中奖列表</h3>
+
+            <div style={{ maxHeight: '600px', overflow: 'auto' }}>
+              <table className="table">
+                <thead style={{ position: 'sticky', top: 0, background: 'white', zIndex: 1 }}>
+                  <tr>
+                    <th>序号</th>
+                    <th>姓名</th>
+                    <th>工号</th>
+                    <th>奖项</th>
+                    <th>等级</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {winners.map((winner, index) => (
+                    <tr key={index}>
+                      <td>{index + 1}</td>
+                      <td><strong>{winner.employeeName}</strong></td>
+                      <td>{winner.employeeId}</td>
+                      <td>{winner.prizeName}</td>
+                      <td>{winner.prizeLevel}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {winners.length > 0 && (
+        <div className="card mt-4">
+          <h3 className="subheading">📊 统计信息</h3>
+
+          <div className="grid-3">
+            <div className="card" style={{ background: '#f7fafc' }}>
+              <div className="text-small">参与总人数</div>
+              <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#667eea' }}>
+                {employees.length}
+              </div>
+            </div>
+
+            <div className="card" style={{ background: '#f7fafc' }}>
+              <div className="text-small">中奖人数</div>
+              <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#48bb78' }}>
+                {winners.length}
+              </div>
+            </div>
+
+            <div className="card" style={{ background: '#f7fafc' }}>
+              <div className="text-small">中奖率</div>
+              <div style={{ fontSize: '32px', fontWeight: 'bold', color: '#ed8936' }}>
+                {((winners.length / employees.length) * 100).toFixed(1)}%
+              </div>
+            </div>
+          </div>
+
+          <div className="card mt-4" style={{ background: '#f7fafc' }}>
+            <h4 className="subheading">奖项分布</h4>
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>奖项</th>
+                  <th>等级</th>
+                  <th>中奖人数</th>
+                  <th>完成度</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sortedPrizes.map((prize, index) => {
+                  const prizeWinners = winners.filter(w => w.prizeLevel === prize.level)
+                  const percentage = (prizeWinners.length / prize.count) * 100
+
+                  return (
+                    <tr key={index}>
+                      <td>{prize.name}</td>
+                      <td>{prize.level}</td>
+                      <td>{prizeWinners.length}</td>
+                      <td>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <div style={{
+                            flex: 1,
+                            height: '8px',
+                            background: '#e2e8f0',
+                            borderRadius: '4px',
+                            overflow: 'hidden',
+                            minWidth: '100px'
+                          }}>
+                            <div style={{
+                              width: `${Math.min(percentage, 100)}%`,
+                              height: '100%',
+                              background: percentage >= 100 ? '#48bb78' : '#667eea'
+                            }} />
+                          </div>
+                          <span className="text-small">{percentage.toFixed(0)}%</span>
+                        </div>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default Results
