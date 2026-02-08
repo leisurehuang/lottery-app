@@ -7,7 +7,7 @@ export default defineConfig({
     port: 3000,
     open: true
   },
-  base: '/lottery-app/', // GitHub Pages base path (仓库名)
+  base: '/lottery-app/', // only for GitHub Pages base path (仓库名)
   build: {
     outDir: 'dist',
     assetsDir: 'assets'
