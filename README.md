@@ -33,6 +33,12 @@
 - ✨ **流畅动画** - 滚动动画、脉动效果、渐变色彩
 - 📱 **响应式布局** - 适配各种屏幕尺寸
 
+## 🌐 在线体验
+
+**GitHub Pages 演示**：[https://yourusername.github.io/lottery-app/](https://yourusername.github.io/lottery-app/)
+
+> 🎊 可以直接在线体验，无需安装！
+
 ## 🚀 快速开始
 
 ### 环境要求
@@ -306,6 +312,36 @@ npm run preview
   }
 }
 ```
+
+## 🌐 GitHub Pages 部署
+
+本项目支持一键部署到 GitHub Pages，完全免费！
+
+### 快速部署
+
+```bash
+# 1. 推送到 GitHub
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/yourusername/lottery-app.git
+git push -u origin main
+```
+
+### 配置 GitHub Pages
+
+1. 进入仓库 **Settings** → **Pages**
+2. **Source** 选择：GitHub Actions
+3. 等待自动部署完成
+
+### 访问地址
+
+```
+https://yourusername.github.io/lottery-app/
+```
+
+详细步骤请查看：[DEPLOYMENT.md](DEPLOYMENT.md)
 
 ## 🤝 贡献
 
