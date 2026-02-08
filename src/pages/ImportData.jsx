@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 function ImportData({ appData, updateAppData }) {
   const [textData, setTextData] = useState('')
@@ -70,6 +71,11 @@ function ImportData({ appData, updateAppData }) {
 
   return (
     <div className="fade-in">
+      <div className="page-header">
+        <Link to="/" className="button button-secondary">
+          ← 返回首页
+        </Link>
+      </div>
       <div className="card">
         <h2 className="subheading">📥 导入员工数据</h2>
 

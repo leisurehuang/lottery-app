@@ -92,6 +92,11 @@ function Results({ appData, updateAppData }) {
 
   return (
     <div className="fade-in">
+      <div className="page-header">
+        <Link to="/" className="button button-secondary">
+          ← 返回首页
+        </Link>
+      </div>
       <div className="card">
         <div className="flex-between">
           <h2 className="subheading">🏆 中奖名单</h2>

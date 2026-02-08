@@ -1,10 +1,26 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 function PrizeConfig({ appData, updateAppData }) {
-  const [prizes, setPrizes] = useState(appData.prizes.length > 0 ? appData.prizes : [
-    { level: 1, name: '幸运奖', count: 10 }
-  ])
+  const [prizes, setPrizes] = useState(() => {
+    try {
+      return (appData.prizes && appData.prizes.length > 0) ? appData.prizes : [
+        { level: 1, name: '幸运奖', count: 10 }
+      ]
+    } catch (error) {
+      console.error('Error loading prizes:', error)
+      return [{ level: 1, name: '幸运奖', count: 10 }]
+    }
+  })
   const [newPrize, setNewPrize] = useState({ level: 1, name: '', count: 1 })
+  const [drawMode, setDrawMode] = useState(() => {
+    try {
+      return appData.drawMode || 'single'
+    } catch (error) {
+      console.error('Error loading drawMode:', error)
+      return 'single'
+    }
+  })
 
   const addPrize = () => {
     if (!newPrize.name.trim()) {
@@ -46,17 +62,17 @@ function PrizeConfig({ appData, updateAppData }) {
     }
 
     const sortedPrizes = [...prizes].sort((a, b) => b.level - a.level)
-    updateAppData({ prizes: sortedPrizes })
+    updateAppData({ prizes: sortedPrizes, drawMode })
     alert('奖品配置已保存！')
   }
 
   const loadPreset = () => {
     setPrizes([
       { level: 1, name: '幸运奖', count: 20 },
-      { level: 2, name: '三等奖', count: 10 },
-      { level: 3, name: '二等奖', count: 5 },
-      { level: 4, name: '一等奖', count: 3 },
-      { level: 5, name: '特等奖', count: 1 }
+      { level: 3, name: '三等奖', count: 10 },
+      { level: 5, name: '二等奖', count: 5 },
+      { level: 8, name: '一等奖', count: 3 },
+      { level: 10, name: '特等奖', count: 1 }
     ])
   }
 
@@ -69,8 +85,22 @@ function PrizeConfig({ appData, updateAppData }) {
 
   const totalPrizes = prizes.reduce((sum, p) => sum + p.count, 0)
 
+  if (!appData) {
+    return (
+      <div className="card fade-in">
+        <h2 className="subheading">🎁 奖品配置</h2>
+        <p className="text">数据加载中...</p>
+      </div>
+    )
+  }
+
   return (
     <div className="fade-in">
+      <div className="page-header">
+        <Link to="/" className="button button-secondary">
+          ← 返回首页
+        </Link>
+      </div>
       <div className="card">
         <h2 className="subheading">🎁 奖品配置</h2>
 
@@ -117,6 +147,31 @@ function PrizeConfig({ appData, updateAppData }) {
           <button onClick={addPrize} className="button button-primary mt-4">
             添加奖品
           </button>
+        </div>
+
+        <div className="card mt-4" style={{ background: '#f7fafc' }}>
+          <h3 className="subheading">抽取模式</h3>
+          <div className="flex-gap">
+            <button
+              onClick={() => setDrawMode('single')}
+              className={drawMode === 'single' ? 'button button-primary' : 'button button-secondary'}
+              style={{ flex: 1 }}
+            >
+              逐个抽取
+            </button>
+            <button
+              onClick={() => setDrawMode('batch')}
+              className={drawMode === 'batch' ? 'button button-primary' : 'button button-secondary'}
+              style={{ flex: 1 }}
+            >
+              一次性抽取
+            </button>
+          </div>
+          <p className="text-small mt-4">
+            {drawMode === 'single'
+              ? '逐个抽取：每次抽取一名中奖者，增加悬念和仪式感'
+              : '一次性抽取：一次性抽取当前奖项所有中奖者，快速高效'}
+          </p>
         </div>
 
         <div className="flex-gap mt-4">
