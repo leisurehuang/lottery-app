@@ -224,12 +224,8 @@ function Lottery({ appData, updateAppData }) {
           <h2 className="subheading">🎰 抽奖进行中</h2>
 
           <div className="card" style={{ background: 'var(--color-background)', color: 'white' }}>
-            <div className="text-small">当前奖项</div>
             <div style={{ fontSize: '36px', fontWeight: 'bold', margin: '16px 0' }}>
-              {currentPrize.name}
-            </div>
-            <div className="text-small">
-              等级 {currentPrize.level} | 共 {currentPrize.count} 份 | 模式: {drawMode === 'single' ? '逐个抽取' : '一次性抽取'}
+              {currentPrize.name}（{currentPrize.count}名）
             </div>
           </div>
 
@@ -425,8 +421,7 @@ function Lottery({ appData, updateAppData }) {
                 >
                   <div className="flex-between">
                     <div>
-                      <strong>{prize.name}</strong>
-                      <span className="text-small">（等级 {prize.level}）</span>
+                      <strong>{prize.name}（{prize.count}名）</strong>
                     </div>
                     <div className="text-small">
                       {prizeWinners.length} / {prize.count}
