@@ -223,7 +223,7 @@ function Lottery({ appData, updateAppData }) {
         <div className="card">
           <h2 className="subheading">🎰 抽奖进行中</h2>
 
-          <div className="card" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white' }}>
+          <div className="card" style={{ background: 'var(--color-background)', color: 'white' }}>
             <div className="text-small">当前奖项</div>
             <div style={{ fontSize: '36px', fontWeight: 'bold', margin: '16px 0' }}>
               {currentPrize.name}
@@ -238,7 +238,7 @@ function Lottery({ appData, updateAppData }) {
               <div className="card mt-4" style={{ textAlign: 'center', minHeight: '200px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {displayNames.length > 0 ? (
                   <div>
-                    <div style={{ fontSize: '48px', fontWeight: 'bold', color: '#667eea' }}>
+                    <div style={{ fontSize: '48px', fontWeight: 'bold', color: 'var(--color-primary)' }}>
                       {displayNames[0].name}
                     </div>
                     <div className="text-small mt-4">
@@ -261,13 +261,13 @@ function Lottery({ appData, updateAppData }) {
                     {remainingCount <= 0 ? '本轮已完成' : '开始滚动'}
                   </button>
                 ) : (
-                  <button
-                    onClick={stopRoll}
-                    className="button button-primary"
-                    style={{ fontSize: '20px', padding: '16px 48px', background: '#48bb78' }}
-                  >
-                    停止
-                  </button>
+              <button
+                onClick={stopRoll}
+                className="button button-primary"
+                style={{ fontSize: '20px', padding: '16px 48px', background: 'var(--color-accent)' }}
+              >
+                停止
+              </button>
                 )}
 
                 {remainingCount <= 0 && (
@@ -291,9 +291,9 @@ function Lottery({ appData, updateAppData }) {
                       <div
                         key={`${emp.__tick}-${emp.__random}-${index}`}
                         className="batch-rolling-card"
-                        style={{ animationDelay: `${index * 0.05}s` }}
+                        style={{ animationDelay: `${index * 0.05}s`, borderColor: 'var(--color-accent)' }}
                       >
-                        <div className="batch-name">{emp.name}</div>
+                        <div className="batch-name" style={{ color: 'var(--color-primary)' }}>{emp.name}</div>
                         <div className="text-small">{emp.id}</div>
                       </div>
                     ))}
@@ -338,13 +338,13 @@ function Lottery({ appData, updateAppData }) {
                     </button>
                   )
                 ) : (
-                  <button
-                    onClick={stopBatchRoll}
-                    className="button button-primary"
-                    style={{ fontSize: '20px', padding: '16px 48px', background: '#48bb78' }}
-                  >
-                    停止
-                  </button>
+              <button
+                onClick={stopBatchRoll}
+                className="button button-primary"
+                style={{ fontSize: '20px', padding: '16px 48px', background: 'var(--color-accent)' }}
+              >
+                停止
+              </button>
                 )}
               </div>
             </>
@@ -368,21 +368,21 @@ function Lottery({ appData, updateAppData }) {
                   {currentPrizeWinners.length} / {currentPrize.count}
                 </span>
               </div>
+            <div style={{
+              width: '100%',
+              height: '20px',
+              background: '#e2e8f0',
+              borderRadius: '10px',
+              overflow: 'hidden',
+              marginTop: '8px'
+            }}>
               <div style={{
-                width: '100%',
-                height: '20px',
-                background: '#e2e8f0',
-                borderRadius: '10px',
-                overflow: 'hidden',
-                marginTop: '8px'
-              }}>
-                <div style={{
-                  width: `${(currentPrizeWinners.length / currentPrize.count) * 100}%`,
-                  height: '100%',
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  transition: 'width 0.3s ease'
-                }} />
-              </div>
+                width: `${(currentPrizeWinners.length / currentPrize.count) * 100}%`,
+                height: '100%',
+                background: 'var(--color-background)',
+                transition: 'width 0.3s ease'
+              }} />
+            </div>
             </div>
           )}
 
@@ -449,13 +449,13 @@ function Lottery({ appData, updateAppData }) {
               </div>
               <div>
                 <div className="text-small">剩余未中奖</div>
-                <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#ed8936' }}>
+                <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#FF8C00' }}>
                   {availableEmployees.length}
                 </div>
               </div>
               <div>
                 <div className="text-small">已中奖人数</div>
-                <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#48bb78' }}>
+                <div style={{ fontSize: '24px', fontWeight: 'bold', color: 'var(--color-accent)' }}>
                   {winners.length}
                 </div>
               </div>

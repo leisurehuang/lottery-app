@@ -1,17 +1,3 @@
-:root {
-  --color-primary: #D32F2F;
-  --color-secondary: #FFA000;
-  --color-accent: #FFD700;
-  --color-background: linear-gradient(135deg, #D32F2F 0%, #FFA000 100%);
-  --color-card-background: #FFFBF0;
-  --color-text: #212121;
-  --color-text-secondary: #757575;
-  --color-button-text: #FFFFFF;
-
-  --theme-emoji: '🧧';
-  --theme-decoration: '🏮';
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -21,10 +7,10 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    'Microsoft YaHei', 'PingFang SC', 'SimHei', sans-serif;
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: var(--color-background);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
 }
 
@@ -39,7 +25,7 @@ body {
 }
 
 .card {
-  background: var(--color-card-background);
+  background: white;
   border-radius: 12px;
   padding: 24px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -57,13 +43,13 @@ body {
 }
 
 .button-primary {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
-  color: var(--color-button-text);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
 }
 
 .button-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
 
 .button-secondary {
@@ -95,8 +81,8 @@ body {
 
 .input:focus {
   outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
 .select {
@@ -143,18 +129,18 @@ body {
 .subheading {
   font-size: 24px;
   font-weight: 600;
-  color: var(--color-text);
+  color: #2d3748;
   margin-bottom: 16px;
 }
 
 .text {
-  color: var(--color-text-secondary);
+  color: #4a5568;
   line-height: 1.6;
 }
 
 .text-small {
   font-size: 14px;
-  color: var(--color-text-secondary);
+  color: #718096;
 }
 
 .flex {
@@ -258,7 +244,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--color-card-background);
+  background: white;
   border-radius: 12px;
   padding: 16px 24px;
   margin-bottom: 20px;
@@ -268,7 +254,7 @@ body {
 .navbar-title {
   font-size: 28px;
   font-weight: 700;
-  color: var(--color-text);
+  color: #2d3748;
   margin: 0;
 }
 
@@ -286,7 +272,7 @@ body {
 }
 
 .stat-item {
-  background: var(--color-card-background);
+  background: white;
   border-radius: 8px;
   padding: 16px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -298,7 +284,7 @@ body {
 .stat-value {
   font-size: 32px;
   font-weight: 700;
-  color: var(--color-primary);
+  color: #2d3748;
 }
 
 /* Settings Overlay */
@@ -316,7 +302,7 @@ body {
 }
 
 .setting-menu {
-  background: var(--color-card-background);
+  background: white;
   width: 320px;
   height: 100%;
   padding: 24px;
@@ -364,14 +350,14 @@ body {
 
 .setting-item:hover {
   background: #f7fafc;
-  border-color: var(--color-primary);
+  border-color: #667eea;
   transform: translateX(-4px);
 }
 
 .setting-item-label {
   font-size: 16px;
   font-weight: 600;
-  color: var(--color-text);
+  color: #2d3748;
   margin-bottom: 4px;
 }
 
@@ -393,14 +379,13 @@ body {
 }
 
 .batch-rolling-card {
-  background: var(--color-card-background);
+  background: white;
   border-radius: 8px;
   padding: 16px;
   text-align: center;
   animation: batchPulse 0.8s ease-in-out infinite alternate;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
   transition: all 0.3s ease;
-  border: 2px solid var(--color-accent);
 }
 
 .batch-rolling-card:nth-child(odd) {
@@ -414,17 +399,17 @@ body {
 @keyframes batchPulse {
   0% {
     transform: scale(1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
   }
   100% {
     transform: scale(1.08);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.6);
   }
 }
 
 .batch-name {
   font-size: 20px;
   font-weight: bold;
-  color: var(--color-primary);
+  color: #667eea;
   margin-bottom: 8px;
 }

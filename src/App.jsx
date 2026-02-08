@@ -4,8 +4,25 @@ import ImportData from './pages/ImportData'
 import PrizeConfig from './pages/PrizeConfig'
 import Lottery from './pages/Lottery'
 import Results from './pages/Results'
+import ThemeSettings from './pages/ThemeSettings'
+import { THEMES, DEFAULT_THEME } from './config/themes'
 
 const STORAGE_KEY = 'lottery_app_data'
+
+const applyTheme = (themeId) => {
+  const theme = THEMES[themeId] || THEMES[DEFAULT_THEME]
+  const root = document.documentElement
+  root.style.setProperty('--color-primary', theme.colors.primary)
+  root.style.setProperty('--color-secondary', theme.colors.secondary)
+  root.style.setProperty('--color-accent', theme.colors.accent)
+  root.style.setProperty('--color-background', theme.colors.background)
+  root.style.setProperty('--color-card-background', theme.colors.cardBackground)
+  root.style.setProperty('--color-text', theme.colors.text)
+  root.style.setProperty('--color-text-secondary', theme.colors.textSecondary)
+  root.style.setProperty('--color-button-text', theme.colors.buttonText)
+  root.style.setProperty('--theme-emoji', `'${theme.elements.emoji}'`)
+  root.style.setProperty('--theme-decoration', `'${theme.elements.decoration}'`)
+}
 
 function SettingMenu({ appData, updateAppData, resetData, onClose }) {
   const { employees = [], prizes = [] } = appData || {}
@@ -13,6 +30,7 @@ function SettingMenu({ appData, updateAppData, resetData, onClose }) {
   const menuItems = [
     { to: '/import', icon: '📥', label: '导入数据', description: '导入员工名单' },
     { to: '/config', icon: '🎁', label: '奖品配置', description: '配置奖项和抽取模式' },
+    { to: '/theme', icon: '🎨', label: '主题设置', description: '切换主题风格' },
     { to: '/results', icon: '📋', label: '中奖名单', description: '查看和导出结果' },
   ]
 
@@ -72,24 +90,29 @@ function App() {
       const saved = localStorage.getItem(STORAGE_KEY)
       if (saved) {
         const parsed = JSON.parse(saved)
+        const theme = parsed.theme || DEFAULT_THEME
+        applyTheme(theme)
         return {
           employees: Array.isArray(parsed.employees) ? parsed.employees : [],
           prizes: Array.isArray(parsed.prizes) ? parsed.prizes : [],
           winners: Array.isArray(parsed.winners) ? parsed.winners : [],
           currentLevel: parsed.currentLevel || 0,
-          drawMode: parsed.drawMode || 'single'
+          drawMode: parsed.drawMode || 'single',
+          theme: theme
         }
       }
     } catch (error) {
       console.error('Error loading from localStorage:', error)
       localStorage.removeItem(STORAGE_KEY)
     }
+    applyTheme(DEFAULT_THEME)
     return {
       employees: [],
       prizes: [],
       winners: [],
       currentLevel: 0,
-      drawMode: 'single'
+      drawMode: 'single',
+      theme: DEFAULT_THEME
     }
   })
 
@@ -99,6 +122,9 @@ function App() {
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(appData))
+    if (appData.theme) {
+      applyTheme(appData.theme)
+    }
   }, [appData])
 
   const updateAppData = (newData) => {
@@ -123,7 +149,9 @@ function App() {
   return (
     <div className="container">
       <nav className="navbar">
-        <h1 className="navbar-title">🎉 年会抽奖系统</h1>
+        <h1 className="navbar-title">
+          {THEMES[appData.theme || DEFAULT_THEME].elements.emoji} 年会抽奖系统
+        </h1>
         <button
           onClick={() => setShowSettings(true)}
           className="button button-primary navbar-settings"
@@ -145,6 +173,7 @@ function App() {
         <Route path="/" element={<HomePage appData={appData} updateAppData={updateAppData} />} />
         <Route path="/import" element={<ImportData appData={appData} updateAppData={updateAppData} />} />
         <Route path="/config" element={<PrizeConfig appData={appData} updateAppData={updateAppData} />} />
+        <Route path="/theme" element={<ThemeSettings appData={appData} updateAppData={updateAppData} />} />
         <Route path="/results" element={<Results appData={appData} updateAppData={updateAppData} />} />
       </Routes>
     </div>
