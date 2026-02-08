@@ -35,7 +35,7 @@
 
 ## 🌐 在线体验
 
-**GitHub Pages 演示**：[https://yourusername.github.io/lottery-app/](https://yourusername.github.io/lottery-app/)
+**GitHub Pages 演示**：[https://leisurehuang.github.io/lottery-app/](https://leisurehuang.github.io/lottery-app/)
 
 > 🎊 可以直接在线体验，无需安装！
 
@@ -338,7 +338,7 @@ git push -u origin main
 ### 访问地址
 
 ```
-https://yourusername.github.io/lottery-app/
+https://leisurehuang.github.io/lottery-app/
 ```
 
 详细步骤请查看：[DEPLOYMENT.md](DEPLOYMENT.md)
