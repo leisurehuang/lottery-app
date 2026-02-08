@@ -2,6 +2,13 @@
 
 一个专为年会设计的抽奖网页应用，采用中国新年主题，支持多种抽取模式，具有完整的主题切换功能和精美的动画效果。
 
+
+## 🔊 说明
+本项目完全使用GLM4.7模型编码，无人工开发过程～
+
+我正在智谱大模型开放平台 BigModel.cn上打造AI应用，智谱新一代旗舰模型GLM-4.7已上线， 在推理、代码、智能体综合能力达到开源模型 SOTA 水平，通过我的邀请链接注册即可获得 2000万Tokens 大礼包，期待和你一起在BigModel上畅享卓越模型能力；[链接](https://www.bigmodel.cn/invite?icode=dV5a9Bq%2BL5P3uYiwyfJ0EWczbXFgPRGIalpycrEwJ28%3D)
+
+
 ## 🖼️ 界面预览
 
 ![春节主题首页](screenshots/home-spring.png)
